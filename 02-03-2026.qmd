@@ -1,0 +1,99 @@
+---
+title: "notes 02-03-2026"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this: Module 10
+
+```{r}
+library(tidyverse)
+library(readr)
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/KamilarAndCooperData.csv"
+d <- read_csv(f, col_names = TRUE)  # creates a 'tibble'
+head(d)
+# selecting rows..
+s <- filter(d, Family == "Hominidae" & Mass_Dimorphism > 2)
+head(s)
+# selecting specific columns...
+s <- select(d, Family, Genus, Body_mass_male_mean)
+head(s)
+# reordering a data frame by a set of variables...
+s <- arrange(d, Family, Genus, Body_mass_male_mean)
+head(s)
+# `desc()` can be used to reverse the order
+s <- arrange(d, desc(Family), Genus, Species, desc(Body_mass_male_mean))
+head(s)
+# renaming columns...
+s <- rename(d, Female_Mass = Body_mass_female_mean)
+head(s$Female_Mass)
+# and adding new columns...
+s <- mutate(d, Binomial = paste(Genus, Species, sep = " "))
+head(s$Binomial)  # or head(s[['Binomial']])
+# the n() function returns the number of rows in the data frame
+s <- summarize(d, n_cases = n(), avgF = mean(Body_mass_female_mean, na.rm = TRUE),
+    avgM = mean(Body_mass_male_mean, na.rm = TRUE))
+s
+by_family <- group_by(d, Family)
+# here, n() returns the number of rows in the group being considered
+s <- summarise(by_family, n_cases = n(), avgF = mean(Body_mass_female_mean, na.rm = TRUE),
+    avgM = mean(Body_mass_male_mean, na.rm = TRUE))
+s
+
+
+
+
+
+```
+
+You can add options to executable code like this Module 9
+
+```{r}
+library(tidyverse)
+library(readr)
+library(curl)
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/KamilarAndCooperData.csv"
+d <- read_csv(f, col_names = TRUE)  # creates a 'tibble'
+head(d)
+```
+
+02/03/2026 class notes using ggplot:
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(fishualize)
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/KamilarAndCooperData.csv"
+d <- read_csv(f, col_names = TRUE)  # creates a 'tibble'
+p<- ggplot(data = d, mapping = aes(x = Family, y = log(Body_mass_female_mean))) +
+  geom_boxplot(na.rm = TRUE) 
+p
+p<- p +
+  geom_jitter(color = "blue", width = 0.1)
+p
+p<- p +theme(axis.text.x = element_text(angle = 90))
+p
+hist(log(d$Body_mass_female_mean))
+hist(log(d$Body_mass_female_mean), freq = FALSE)
+lines(density(log(d$Body_mass_female_mean), na.rm = TRUE), col = "blue")
+p<-plot(x = log(d$Body_mass_female_mean), y = log(d$Brain_Size_Female_Mean))
+p
+p <- ggplot(data = d, aes(x = log(Body_mass_female_mean), y = log(Brain_Size_Female_Mean),
+    color = factor(Family)))  # first, we build a plot object and color points by Family
+# then we modify the axis labels
+p <- p + xlab("log(Female Body Mass)") + ylab("log(Female Brain Size)")
+# then we make a scatterplot
+p <- p + geom_point(na.rm = TRUE)
+# then we modify the legend
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+# and, finally, we plot the object
+p
+
+
+```
