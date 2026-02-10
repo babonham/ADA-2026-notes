@@ -1,0 +1,57 @@
+---
+title: "2-10-2026"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+library(tidyverse)
+f<- "https://raw.githubusercontent.com/difiore/ada-datasets/main/IMDB-movies.csv"
+d<- read_csv(f, col_names = TRUE)
+head(d)
+names(d)
+view(d$genres)
+unique(d$genres)
+challenge<- d %>%
+  mutate(comedy = if_else(str_detect(genres, "Comedy"), TRUE, FALSE))
+challenge
+challenge2<- challenge %>%
+  summarise(Total_movies = n(), comedies = sum(comedy, na.rm = TRUE))
+challenge<- challenge %>%
+  mutate(rating = case_when(
+    averageRating < 3.3 ~ "low",
+    averageRating < 6.7 ~ "med",
+    averageRating <= 10 ~ "high"
+  ))
+challenge4<- challenge %>%
+  group_by(rating) %>%
+  summarise(count = n(), averagerun = mean(runtimeMinutes, na.rm = TRUE))
+
+for (i in 1:nrow(d)) {if(!is.na(d[i,]$runtimeMinutes)) print(i)}
+```
+
+Wordle creation challenge
+
+```{r}
+f<- "https://raw.githubusercontent.com/difiore/ada-datasets/main/papers.csv"
+p<- read_csv(f, col_names = TRUE)
+names(p)
+view(p)
+author<- tibble(
+  fullName = c("Abbott, David"),
+  lastName = c("Abbott"), firstName = c("David"))
+#inner join on papers
+inner_join(p, author,
+           by = c("First Author Last Name" = "lastName", "First Author First Name" = "firstName"))
+
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
