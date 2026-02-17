@@ -54,11 +54,47 @@ var(x) #same thing as above (sample_var)
 
 ```
 
-You can add options to executable code like this
+
 
 ```{r}
-#| echo: false
-2 * 2
+library(mosaic)
+mu<- 10 #for "mean parameter
+sigma<- 2 #for "sd" parameter
+plotDist("norm", mean = mu, sd = sigma, xlab = "x", ylab = "Frequency")
+s1<- rnorm(n =10, mean =10, sd =2)
+histogram(s1)
+mean(s1)
+sd(s1)
+
+s2<- rnorm(n = 10000, mean = 10, sd = 2)
+histogram(s2)
+mean(s2)
+sd(s2)
+
+s<- rnorm(n = 10000, mean = 10, sd  = 2)
+moments::skewness(s)
+moments::kurtosis(s)
+
+#right skewed distribution
+df1<- 5
+df2<- 20
+plotDist("f",
+         df1 = df1, df2 = df2, col = "purple", xlab = "x", ylab = "Frequency")
+s<- rf(n =10000, df1 = 5, df2 = 20)
+histogram(s)
+moments::skewness(s)
+moments::kurtosis(s)
+
+#left skewed distribution
+shape1 = 5
+shape2 = 3
+plotDist("beta", shape1 =shape1, shape2 = shape2, col ="purple", lwd = 2) #lwd is line width
+s<- rbeta(n = 10000, shape1 = 5, shape2 = 3)
+histogram(s, col ="purple")
+moments::skewness(s)
+moments::kurtosis(s)
+
+
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
