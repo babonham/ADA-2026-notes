@@ -27,6 +27,9 @@ Harmonic mean - the reciprocal of the average of the reciprocals of a set of val
 Geometric mean - a measure of central tendency for processes that are exponential (e.g., some phases of population growth in natural populations) or multiplicative (e.g., increases in area or volume that accompany increases in linear dimension) in nature, rather than additive = the 
  root of the product of the values, taken across a set of 
  values; for the mathematically inclined, it also equals the antilog of the averaged log values
+ Mean deviation - avg of abs values of deviations from median
+ mean squared deviation - avg of squared deviations from mean = variance
+ standard deviation - square root of variance
 ```{r}
 library(tidyverse)
 ```
