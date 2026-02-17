@@ -30,8 +30,28 @@ Geometric mean - a measure of central tendency for processes that are exponentia
  Mean deviation - avg of abs values of deviations from median
  mean squared deviation - avg of squared deviations from mean = variance
  standard deviation - square root of variance
+ 
+ Spread Equations:
+ pop variance: SS/N , N=pop size
+ sample variance: SS/n-1, n=sample size
+
+Skewness - characterizes asymmetry in distribution of data
+Kurtosis - characterizes the peakedness or flatness of distribution
+
 ```{r}
 library(tidyverse)
+x<-c(1,2,3,4,5) #create vector
+#function to calculate population variance for vector of values
+pop_var<- function(x) {
+  sum((x - mean(x))^2)/(length(x))}
+pop_var(x)
+
+#function to calculate sample variance
+sample_var<- function(x) {
+  sum((x - mean(x))^2)/(length(x)-1)}
+sample_var(x)
+var(x) #same thing as above (sample_var)
+
 ```
 
 You can add options to executable code like this
