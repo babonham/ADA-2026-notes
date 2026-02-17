@@ -94,7 +94,17 @@ histogram(s, col ="purple")
 moments::skewness(s)
 moments::kurtosis(s)
 
-
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Sampling Distribution
+```{r}
+reps<- 100000
+samp_dist_mean<- do(reps) * mean(rnorm(n =10, mean =10, sd =2))
+histogram(samp_dist_mean$mean)
+
+samp_dist_median<- do(reps) * median(rnorm(n =10, mean =10, sd =2))
+histogram(samp_dist_median$median)
+
+se_mean<- sd(samp_dist_mean$mean)
+se_median <- sd(samp_dist_median$median)
+```
