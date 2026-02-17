@@ -1,0 +1,41 @@
+---
+title: "02-17-2026"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+Notes
+
+Population - all of the elements from a set of data (e.g., all of the gorillas in the world) = N
+Sample - one or more observations drawn from a population by some kind of sampling process (e.g., the set of gorillas living in Rwanda, the set of gorilla skeletons found in a museum) = n
+Parameter - a measurable characteristic of a population that summarizes data (e.g., the mean value of the femur length of all gorillas)
+Statistic - a measurable characteristic about a sample that summarizes data (e.g., the mean femur length of gorilla femurs found at the American Museum of Natural History)
+Descriptive statistics - summarize data from a sample
+Inferential statistics - to make predictions or inferences
+Median - the middle value in a rank ordered series of values
+Mean - the sum of measured values divided by the average or the arithimetic mean
+Mode - the most common measurement of values observed
+Harmonic mean - the reciprocal of the average of the reciprocals of a set of values
+Geometric mean - a measure of central tendency for processes that are exponential (e.g., some phases of population growth in natural populations) or multiplicative (e.g., increases in area or volume that accompany increases in linear dimension) in nature, rather than additive = the 
+ root of the product of the values, taken across a set of 
+ values; for the mathematically inclined, it also equals the antilog of the averaged log values
+```{r}
+library(tidyverse)
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
