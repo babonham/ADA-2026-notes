@@ -1,0 +1,26 @@
+---
+title: "02-24-2026"
+format: html
+editor: visual
+---
+
+
+```{r}
+library(tidyverse)
+library(mosaic)
+s<-rnorm(n =100, mean =2, sd = 4)
+mean(s)
+sd(s)
+reps<- 1000
+```
+
+T Distributions
+
+```{r}
+plotDist("t", df=100, xlab = "x", ylab = "Frequency", col = "red")
+plotDist("t", df=100, xlab = "x", ylab = "Frequency", col = "red", add = TRUE)
+
+x<- do(reps) * mean(rt(n =100, df =99, ncp =2))
+histogram(~mean, data =x)
+```
+
