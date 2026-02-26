@@ -1,0 +1,30 @@
+---
+title: "02-26-2026"
+format: html
+editor: visual
+---
+
+Class Notes
+
+Confidence intervals: an interval around our estimate mean of the sampling distribution for a particular statistic, and gives us a range of values into which subsequent estimates of a statistic would be expected to fall
+
+Higher confidence = wider interval
+
+Calculating CI: the value of the statistic +/- critical value * the standard error of the statistic
+
+ex: mean +/- critical value * SE of the mean
+
+
+```{r}
+library(mosaic)
+library(tidyverse)
+x<- c(2.9, 4.8, 8.9, -3.2, 9.1, -2.5, -0.9, -0.1, 2.8, -1.7)
+m<-mean(x)
+se<- sd(x)/sqrt(length(x))
+ci<- m + qnorm(c(0.025, 0.975))*se
+#or
+ci<-m + c(-1,1)*qnorm(0.975)*se
+
+```
+
+
