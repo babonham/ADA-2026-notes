@@ -26,5 +26,61 @@ ci<- m + qnorm(c(0.025, 0.975))*se
 ci<-m + c(-1,1)*qnorm(0.975)*se
 
 ```
+Central Limit Theorem (CLT):
+the sampling distribution of averages of "independent and identically distributed" random variables approaches a normal distribution as sample size increases
 
+When sample size is small (n<30) instead of using the standard normal distribution to calculate our CIs, statisticians typically use a different distribution to generate the relevant quantiles to multiply the standard error by the t distribution
+The t distribution is # of observations-1, its a family of continuous probability distributions that are very similar in shape to the normal
 
+CIs for small distribution:
+mean +/- T (critical values based on quantiles from a t distribution) * SE
+
+```{r}
+ci<- mean(x) + qt(c(0.025, 0.975), df = length(x)-1) * sd(x)/sqrt(length(x))
+```
+CI by Bootstrapping
+"bootstrapping allows us to approximate a sampling distribution even without access to the population from which samples are drawn and without making any assumptions about the theoretical shape of the sampling distribution
+
+we use the quantile() function to define the lower and upper limits based on the values that correspond 
+
+```{r}
+n_boot<- 10000
+boot<- vector() #set up a dummy variable to hold our bootstrap
+n<- length(x) #
+for(i in 1:n_boot) {
+  boot[[i]] <- mean(sample(x, n, replace =TRUE))
+}
+ci_boot<- quantile(boot, probs = c(0.025, 0.975))
+
+#with do() *
+boot<- do(n_boot) * mean(sample(x,n, replace = TRUE))
+histogram(boot$mean)
+ci_boot<- quantile(boot$mean, probs = c(0.025,0.975))
+```
+
+Null Hypothesis Significance Testing
+null hypothesis is interpreted as a baseline hypothesis and is the claim that is presumed to be true. That claim is typically that a particular value of a pop parameter that we estimate by a sample statistic we calculated is consistent with a particular null expectation.The alternative hypothesis is the conjecture that we are testing, usually that the sample statistic is inconsistent with a null expectation.
+
+H0 = null hypothesis = no deviation from expected
+Ha = alternative hypothesis = deviation from whats expected
+
+Implementing a hypothesis test:
+calculate a test statistic based on our data
+calculate the p-value associated with that test statistic, which is the probability of obtaining, by chance, a test statistic that is as high or higher ...
+
+Module 15:
+
+```{r}
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/woolly-weights.csv"
+d <- read_csv(f, col_names = TRUE)
+head(d)
+x <- d$weight
+n <- length(x)
+(m <- mean(x))
+(s <- sd(x))
+(se <- s/sqrt(n))
+mu<- 7.2
+t<- (m-7.2)/se
+t
+ci<- m + qnorm(c(0.025,0.975))*se
+```
