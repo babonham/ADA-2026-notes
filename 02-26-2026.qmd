@@ -82,5 +82,6 @@ n <- length(x)
 mu<- 7.2
 t<- (m-7.2)/se
 t
-ci<- m + qnorm(c(0.025,0.975))*se
+ci<- m + qnorm(c(0.025,0.975))*se #one sample z-test
+ci<- m + c(-1,1) * qt(0.975, df = 14)
 ```
