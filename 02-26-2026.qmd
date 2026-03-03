@@ -18,6 +18,7 @@ ex: mean +/- critical value * SE of the mean
 ```{r}
 library(mosaic)
 library(tidyverse)
+library(infer)
 x<- c(2.9, 4.8, 8.9, -3.2, 9.1, -2.5, -0.9, -0.1, 2.8, -1.7)
 m<-mean(x)
 se<- sd(x)/sqrt(length(x))
@@ -84,4 +85,53 @@ t<- (m-7.2)/se
 t
 ci<- m + qnorm(c(0.025,0.975))*se #one sample z-test
 ci<- m + c(-1,1) * qt(0.975, df = 14)
+ci<- m+ qt(p = c(0.025, 0.975),
+           ncp = 0,
+           df = n-1, 
+           ) * se
+p_lower<- pt(-1 * abs(t), df = n-1)
+p_upper<- 1 - pt(1 * abs(t), df = n-1)
+p<- p_lower+ p_upper
+t.test(d$weight, mu = 7.2)
+```
+
+Exercise 06 (do not need to turn in)
+```{r}
+f<- "https://raw.githubusercontent.com/difiore/ada-datasets/main/tbs-2006-2008-ranges.csv"
+d<- read_csv(f, col_names = TRUE)
+#selecting my variables
+x<- d %>%
+  select(sex, kernel95) %>%
+  group_by(sex) %>%
+  summarise(m = mean(kernel95), sd = sd(kernel95), se = sd(kernel95)/sqrt(length(kernel95)))
+x
+ggplot(data = d, aes(x = sex, y = kernel95, fill = sex)) +
+  geom_boxplot() +
+  geom_point() +
+  xlab("Sex") +
+  ylab("Homerange Size")
+
+males<- d %>%
+  filter(sex == "M")
+females<- d %>%
+  filter(sex == "F")
+#males
+n_boot<- 10000
+boot_males<- do(n_boot) * mean(sample(males$kernel95, nrow(males), replace = TRUE)) 
+boot_males<- boot_males %>%
+  pull(mean)
+histogram(boot_males, col = "lavender")
+plotDist("norm", mean(boot_males), sd(boot_males), add = TRUE, col = "navy")
+ci_boot_m<- quantile(boot_males, probs = c(0.025,0.975))
+#females
+boot_females<- do(n_boot) * mean(sample(females$kernel95, nrow(females), replace = TRUE)) 
+boot_females<- boot_females %>%
+  pull(mean)
+histogram(boot_females, col = "lavender")
+plotDist("norm", mean(boot_females), sd(boot_females), add = TRUE, col = "navy")
+ci_boot_m<- quantile(boot_females, probs = c(0.025,0.975))
+
+#two-sample t-test
+t_num<- mean(males$kernel95)-mean(females$kernel95) - 0
+t_denom<- sqrt(var(males$kernel95)/nrow(males) + var(females$kernel95/nrow(females)))
 ```
