@@ -1,0 +1,55 @@
+---
+title: "03-26-2026"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+library(tidyverse)
+library(broom)
+library(cowplot)
+library(mosaic)
+library(ggplot2)
+f<- "https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/AVONETdataset1.csv"
+d<- read_csv(f, col_names = TRUE)
+d<- d %>%
+  select(Species1, Family1, Order1, Beak.Length_Culmen, Beak.Width,
+         Beak.Depth, Tarsus.Length, Wing.Length, Tail.Length, Mass, Habitat, Migration,
+         Trophic.Level, Trophic.Niche, Primary.Lifestyle, Min.Latitude, Max.Latitude,
+         Centroid.Latitude, Range.Size)
+glimpse(d)
+
+p1<- ggplot(data = d %>% drop_na(Trophic.Level),
+            aes(x = Trophic.Level, y = log(Mass))) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.1)
+
+
+p2<- ggplot(data = d %>% drop_na(Trophic.Level),
+                    aes(x = as.factor(Migration), y = log(Mass))) +
+  geom_boxplot() +
+  geom_jitter(alpha  = 0.1)
+
+density_p1<- ggplot(data = d %>% drop_na(Trophic.Level),
+                    aes(x = log(Mass), fill = Trophic.Level)) +
+  geom_density(alpha = 0.5) +
+  coord_flip() +
+  theme_void()
+
+plot_grid(p1, density_p1, nrow = 1)
+
+
+
+```
+
+```{r}
+
+```
