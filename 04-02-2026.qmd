@@ -1,0 +1,76 @@
+---
+title: "04-02-2026"
+format: html
+editor: visual
+---
+Multiple Regression and ANCOVA
+
+```{r}
+library(car)
+library(jtools)
+library(tidyverse)
+
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/zombies.csv"
+z <- read_csv(f, col_names = TRUE)
+
+#Run a linear model of height as a function of weight ANOVA, we use + to add a predictor)
+m <- lm(height ~ weight + age, data = z)
+summary(m)
+
+#check residuals
+plot(m$model$weight, residuals(m))
+plot(m$model$age, residuals(m))
+plot(fitted(m), residuals(m))
+
+#F-statistic
+f <- (summary(m)$r.squared*(nrow(z)-2-1))/((1-summary(m)$r.squared) * 2)
+
+# linear model of height as a function of weight + age + gender (categorical)
+m <- lm(height ~ weight + age + gender , data = z)
+summary(m)
+
+#check residuals
+plot(m$model$weight, residuals(m))
+plot(m$model$age, residuals(m))
+boxplot(residuals(m) ~ m$model$gender)
+plot(fitted(m), residuals(m))
+
+#variance inflation factor
+vif(m)
+
+
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/AVONETdataset1.csv"
+d <- read_csv(f, col_names = TRUE)
+
+#run a multiple regression of log(Range.Size) as a function of the variables log(Mass) and Primary.Lifestyle
+m <- lm(log(Range.Size) ~ log(Mass) + Primary.Lifestyle, data = acc)
+summary(m)
+
+#What is the estimated mean height, in inches, for a 29 year-old male who weighs 132 pounds who has survived the zombie apocalypse, and what is the 95% confidence interval around this estimate of mean height?
+
+m <- lm(height ~ weight + age + gender, data = z)
+ci <- predict(m, newdata = data.frame(age = 29, gender = "Male", 
+weight = 132), interval = "confidence", level = 0.95)
+
+#What is the 95% prediction interval for the individual heights of 29 year-old, 160-pound male survivors?
+pi <- predict(m, newdata = data.frame(age = 29, gender = "Male", 
+weight = 160), interval = "prediction", level = 0.95)
+
+#The effect_plot() function can be used to plot the relationship between (one of) the predictor variables and the response variable while holding the others constant
+
+#The plot_sums() function can be used to nicely visualize coefficient estimates and CI values around those terms, including visualizing multiple models on the same plot
+
+effect_plot(m, pred = weight,
+              interval = TRUE, int.type = "confidence", int.width = 0.95,
+              plot.points = TRUE)
+plot_summs(m)
+plot_summs(m, plot.distributions = TRUE, rescale.distributions = TRUE)
+```
+
+
+
+```{r}
+
+```
+
+
